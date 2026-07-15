@@ -16,6 +16,7 @@ data/processed/
 *.csv
 !outputs/performance_metrics.csv
 !outputs/factor_regression.csv
+!outputs/sensitivity_analysis.csv
 *.xlsx
 *.parquet
 *.pickle

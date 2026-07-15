@@ -48,6 +48,14 @@ Can a transparent, rules-based portfolio that combines cross-sectional momentum 
 
 ![Strategy Drawdown](outputs/strategy_drawdown.png)
 
+## Robustness Check
+
+The sensitivity analysis evaluates 81 parameter combinations across momentum lookback windows, volatility lookback windows, portfolio breadth, and transaction-cost assumptions. The heatmap isolates the base portfolio setting of 30% breadth and 10 basis points of transaction costs.
+
+![Sensitivity Analysis Heatmap](outputs/sensitivity_heatmap.png)
+
+- [Full sensitivity-analysis results](outputs/sensitivity_analysis.csv)
+
 ## Factor Attribution
 
 The project estimates a monthly Fama-French five-factor regression with heteroskedasticity-consistent HC3 standard errors:

@@ -15,6 +15,7 @@ data/raw/
 data/processed/
 *.csv
 !outputs/performance_metrics.csv
+!outputs/factor_regression.csv
 *.xlsx
 *.parquet
 *.pickle

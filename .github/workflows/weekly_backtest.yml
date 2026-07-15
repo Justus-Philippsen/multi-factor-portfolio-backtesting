@@ -1,0 +1,45 @@
+name: Weekly Market Data Backtest
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+      timezone: "Europe/Berlin"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    name: Run Backtest on Python 3.12
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Download fresh data and run backtest
+        run: |
+          rm -f data/raw/adjusted_close_prices.csv
+          python run_backtest.py
+
+      - name: Upload backtest results
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-backtest-results
+          path: |
+            outputs/backtest_results.csv
+            outputs/performance_metrics.csv
+            outputs/cumulative_performance.png
+            outputs/strategy_drawdown.png
+          if-no-files-found: error
+          retention-days: 30

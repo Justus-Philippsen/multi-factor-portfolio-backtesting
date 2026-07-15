@@ -53,21 +53,8 @@ Can a transparent, rules-based portfolio that combines cross-sectional momentum 
 The project estimates a monthly Fama-French five-factor regression with heteroskedasticity-consistent HC3 standard errors:
 
 \[
-R_{strategy,t} - R_{f,t}
-=
-\alpha
-+
-\beta_M(MKT-RF)_t
-+
-\beta_S SMB_t
-+
-\beta_H HML_t
-+
-\beta_R RMW_t
-+
-\beta_C CMA_t
-+
-\epsilon_t
+R_{\text{strategy},t} - R_{f,t} =
+\alpha + \beta_M(MKT-RF)_t + \beta_S SMB_t + \beta_H HML_t + \beta_R RMW_t + \beta_C CMA_t + \epsilon_t
 \]
 
 The output includes alpha, factor loadings, t-statistics, p-values, \(R^2\), and the number of observations. The five-factor model includes market, size, value, profitability, and investment factors. [Kenneth R. French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html)

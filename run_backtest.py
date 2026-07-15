@@ -1,5 +1,5 @@
 """
-Run the multi-factor portfolio backtest and create outputs.
+Run the multi-factor portfolio backtest and create research outputs.
 """
 
 from pathlib import Path
@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.data_loader import load_prices
+from src.factor_regression import run_factor_regression
 from src.performance import create_performance_table
 from src.portfolio import (
     calculate_benchmark_returns,
@@ -19,10 +20,11 @@ from src.visualization import create_all_visualizations
 OUTPUT_DIR = Path("outputs")
 RESULTS_PATH = OUTPUT_DIR / "backtest_results.csv"
 METRICS_PATH = OUTPUT_DIR / "performance_metrics.csv"
+REGRESSION_PATH = OUTPUT_DIR / "factor_regression.csv"
 
 
 def main():
-    """Run the strategy, calculate metrics, and save all outputs."""
+    """Run the strategy and save performance, attribution, and charts."""
     prices = load_prices()
     weights = create_monthly_weights(prices)
 
@@ -45,13 +47,19 @@ def main():
     metrics = create_performance_table(results)
     metrics.to_csv(METRICS_PATH)
 
+    regression_table, _ = run_factor_regression(results)
+    regression_table.to_csv(REGRESSION_PATH)
+
     create_all_visualizations(results)
 
     print("Backtest completed successfully.")
     print(f"Results saved to: {RESULTS_PATH}")
     print(f"Metrics saved to: {METRICS_PATH}")
+    print(f"Factor regression saved to: {REGRESSION_PATH}")
     print("\nPerformance metrics:")
     print(metrics.round(4))
+    print("\nFama-French five-factor regression:")
+    print(regression_table.round(4))
 
 
 if __name__ == "__main__":

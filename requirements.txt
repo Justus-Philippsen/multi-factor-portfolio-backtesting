@@ -1,5 +1,6 @@
 numpy>=1.26,<3.0
 pandas>=2.2,<3.0
+requests>=2.31,<3.0
 yfinance>=0.2.50,<1.0
 matplotlib>=3.8,<4.0
 statsmodels>=0.14,<1.0

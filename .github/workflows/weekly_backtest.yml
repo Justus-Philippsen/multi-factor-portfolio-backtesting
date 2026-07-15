@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   backtest:
-    name: Run Backtest on Python 3.12
+    name: Run Research Pipeline on Python 3.12
     runs-on: ubuntu-latest
 
     steps:
@@ -32,14 +32,20 @@ jobs:
           rm -f data/raw/adjusted_close_prices.csv
           python run_backtest.py
 
-      - name: Upload backtest results
+      - name: Run parameter sensitivity analysis
+        run: python -m research.sensitivity_analysis
+
+      - name: Upload research outputs
         uses: actions/upload-artifact@v4
         with:
-          name: weekly-backtest-results
+          name: weekly-research-results
           path: |
             outputs/backtest_results.csv
             outputs/performance_metrics.csv
+            outputs/factor_regression.csv
             outputs/cumulative_performance.png
             outputs/strategy_drawdown.png
+            outputs/sensitivity_analysis.csv
+            outputs/sensitivity_heatmap.png
           if-no-files-found: error
           retention-days: 30

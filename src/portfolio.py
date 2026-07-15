@@ -13,6 +13,7 @@ from src.factors import (
     REBALANCE_FREQUENCY,
     TICKERS,
     TOP_QUANTILE,
+    TRANSACTION_COST_BPS,
 )
 
 
@@ -24,9 +25,8 @@ def calculate_signals(prices):
     momentum = asset_prices.pct_change(LOOKBACK_MOMENTUM)
     volatility = daily_returns.rolling(LOOKBACK_VOLATILITY).std() * np.sqrt(252)
 
-    quality = -volatility
     momentum_rank = momentum.rank(axis=1, pct=True)
-    low_volatility_rank = quality.rank(axis=1, pct=True)
+    low_volatility_rank = (-volatility).rank(axis=1, pct=True)
 
     composite_score = (
         FACTOR_WEIGHTS["momentum"] * momentum_rank
@@ -56,10 +56,10 @@ def calculate_portfolio_returns(prices, weights):
     """Calculate net daily strategy returns using prior rebalance weights."""
     asset_returns = prices[TICKERS].pct_change().fillna(0)
     daily_weights = weights.reindex(asset_returns.index, method="ffill").shift(1)
-    gross_returns = (daily_weights * asset_returns).sum(axis=1)
 
+    gross_returns = (daily_weights * asset_returns).sum(axis=1)
     turnover = daily_weights.diff().abs().sum(axis=1).fillna(0)
-    transaction_cost = turnover * 0.001
+    transaction_cost = turnover * (TRANSACTION_COST_BPS / 10_000)
 
     return gross_returns - transaction_cost
 
